@@ -20,3 +20,4 @@ yarn-error.log
 /.vscode
 draft.yaml
 draft.yml
+.blueprint

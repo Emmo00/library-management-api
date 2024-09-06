@@ -4,16 +4,16 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\User;
+use App\Models\Author;
 
-class UserFactory extends Factory
+class AuthorFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Author::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +22,8 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'email' => $this->faker->safeEmail(),
-            'password' => $this->faker->password(),
-            'role' => $this->faker->randomElement(["ADMIN","LIBRARIAN","MEMEBER"]),
+            'bio' => $this->faker->text(),
+            'birthdate' => $this->faker->dateTime(),
         ];
     }
 }
