@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\BookStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('isbn')->index()->unique();
             $table->dateTime('published_date');
             $table->foreignId('author_id')->constrained();
-            $table->enum('status', ["AVAILABLE","BORROWED"])->default('AVAILABLE');
+            $table->enum('status', BookStatus::all())->default(BookStatus::AVAILABLE);
             $table->timestamps();
         });
 

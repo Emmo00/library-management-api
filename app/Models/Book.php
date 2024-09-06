@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BookStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,5 +38,18 @@ class Book extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class);
+    }
+
+    public function borrow()
+    {
+        $this->status = BookStatus::BORROWED;
+        $this->save();
+        return $this;
+    }
+
+    public function returned() {
+        $this->status = BookStatus::AVAILABLE;
+        $this->save();
+        return $this;
     }
 }
