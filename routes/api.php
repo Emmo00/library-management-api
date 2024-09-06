@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowRecordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,8 @@ Route::prefix('users')->group(function () {
 });
 
 Route::post('/login', [UserController::class, 'login']);
+
+Route::prefix('borrow-records')->group(function () {
+    Route::get('/', [BorrowRecordController::class, 'index']);
+    Route::get('/{id}', [BorrowRecordController::class, 'show']);
+});
