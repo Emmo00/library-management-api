@@ -6,6 +6,7 @@ use App\Enums\BookStatus;
 use App\Http\Requests\BorrowBookRequest;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\BorrowRecord;
 use Carbon\Carbon;
@@ -28,8 +29,10 @@ class BookController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-        $book = Book::create($request->all());
+        $author = Author::find($request->author_id);
+        if (!$author) return respondError("Author does not exist", 404);
 
+        $book = Book::create($request->all());
         return respondSuccess("Book created Successfully", $book, 201);
     }
 
@@ -46,8 +49,12 @@ class BookController extends Controller
      */
     public function update(UpdateBookRequest $request, Book $book)
     {
-        $book->update($request->all());
+        if ($request->author_id) {
+            $author = Author::find($request->author_id);
+            if (!$author) return respondError("Author does not exist", 404);
+        }
 
+        $book->update($request->all());
         return respondSuccess("Book updated Successfully", $book);
     }
 
@@ -87,7 +94,7 @@ class BookController extends Controller
             $borrowRecord = BorrowRecord::where([
                 'user_id' => auth()->user()->id,
                 'book_id' => $book->id
-            ]);
+            ])->first();
             if (!$borrowRecord) {
                 return respondError("You didn't borrow this book", 403);
             }

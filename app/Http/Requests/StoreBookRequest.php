@@ -27,7 +27,7 @@ class StoreBookRequest extends FormRequest
             "title" => ["required", "string"],
             "isbn" => ["required", "string", "unique:books"],
             "published_date" => ["required", "date"],
-            "author_id" => ["required", "string", "exists:authors.id"],
+            "author_id" => ["required"],
             "status" => ["sometimes", "required", Rule::in(BookStatus::all())]
         ];
     }
