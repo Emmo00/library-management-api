@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookStatus;
+use App\Http\Requests\BorrowBookRequest;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
+use App\Models\BorrowRecord;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -59,11 +63,19 @@ class BookController extends Controller
     /**
      * Borrow a book
      */
-    public function borrowBook(Book $book)
+    public function borrowBook(Book $book, BorrowBookRequest $request)
     {
-        $book->borrow();
-
-        return respondSuccess("Book status updated successfully", $book);
+        if ($book->status === BookStatus::AVAILABLE) {
+            $borrowRecord = new BorrowRecord();
+            $borrowRecord->user_id = auth()->user()->id;
+            $borrowRecord->book_id = $book->id;
+            $borrowRecord->borrowed_at = Carbon::now();
+            $borrowRecord->due_at = Carbon::parse($request->due_date);
+            $borrowRecord->save();
+            $book->borrowMe();
+            return respondSuccess("Book status updated successfully", $book);
+        }
+        return respondError("Book is unavailable", 403);
     }
 
     /**
@@ -71,8 +83,20 @@ class BookController extends Controller
      */
     public function returnBook(Book $book)
     {
-        $book->returned();
+        if ($book->status === BookStatus::BORROWED) {
+            $borrowRecord = BorrowRecord::where([
+                'user_id' => auth()->user()->id,
+                'book_id' => $book->id
+            ]);
+            if (!$borrowRecord) {
+                return respondError("You didn't borrow this book", 403);
+            }
+            $borrowRecord->returned_at = Carbon::now();
+            $borrowRecord->save();
+            $book->returnMe();
 
-        return respondSuccess("Book status updated successfully", $book);
+            return respondSuccess("Book status updated successfully", $book);
+        }
+        return respondError("This book hasn't been borrowed", 400);
     }
 }

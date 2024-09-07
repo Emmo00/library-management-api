@@ -40,14 +40,14 @@ class Book extends Model
         return $this->belongsTo(Author::class);
     }
 
-    public function borrow()
+    public function borrowMe()
     {
         $this->status = BookStatus::BORROWED;
         $this->save();
         return $this;
     }
 
-    public function returned() {
+    public function returnMe() {
         $this->status = BookStatus::AVAILABLE;
         $this->save();
         return $this;
