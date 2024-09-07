@@ -13,33 +13,33 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('books')->group(function () {
     Route::get('/', [BookController::class, 'index']);
-    Route::get('/{id}', [BookController::class, 'show']);
+    Route::get('/{book}', [BookController::class, 'show']);
     Route::post('/', [BookController::class, 'store']);
-    Route::put('/{id}', [BookController::class, 'update']);
-    Route::delete('/{id}', [BookController::class, 'destroy']);
-    Route::post('/{id}/borrow', [BookController::class, 'borrowBook']);
-    Route::post('/{id}/return', [BookController::class, 'returnBook']);
+    Route::put('/{book}', [BookController::class, 'update']);
+    Route::delete('/{book}', [BookController::class, 'destroy']);
+    Route::post('/{book}/borrow', [BookController::class, 'borrowBook']);
+    Route::post('/{book}/return', [BookController::class, 'returnBook']);
 });
 
 Route::prefix('authors')->group(function () {
     Route::get('/', [AuthorController::class, 'index']);
-    Route::get('/{id}', [AuthorController::class, 'show']);
+    Route::get('/{author}', [AuthorController::class, 'show']);
     Route::post('/', [AuthorController::class, 'store']);
-    Route::put('/{id}', [AuthorController::class, 'update']);
-    Route::delete('/{id}', [AuthorController::class, 'destroy']);
+    Route::put('/{author}', [AuthorController::class, 'update']);
+    Route::delete('/{author}', [AuthorController::class, 'destroy']);
 });
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index']);
-    Route::get('/{id}', [UserController::class, 'show']);
+    Route::get('/{user}', [UserController::class, 'show']);
     Route::post('/', [UserController::class, 'store']);
-    Route::put('/{id}', [UserController::class, 'update']);
-    Route::delete('/{id}', [UserController::class, 'destroy']);
+    Route::put('/{user}', [UserController::class, 'update']);
+    Route::delete('/{user}', [UserController::class, 'destroy']);
 });
 
 Route::post('/login', [UserController::class, 'login']);
 
 Route::prefix('borrow-records')->group(function () {
     Route::get('/', [BorrowRecordController::class, 'index']);
-    Route::get('/{id}', [BorrowRecordController::class, 'show']);
+    Route::get('/{borrowRecord}', [BorrowRecordController::class, 'show']);
 });
