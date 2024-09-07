@@ -15,6 +15,7 @@ $mustBeMember = 'ability:' . UserRole::MEMBER;
 
 Route::prefix('books')->group(function () use ($sanctumAUTH, $mustBeAdminOrLibrarian, $mustBeAdmin, $mustBeMember) {
     Route::get('/', [BookController::class, 'index']);
+    Route::get('/search', [BookController::class, 'search']);
     Route::get('/{book}', [BookController::class, 'show']);
     Route::post('/', [BookController::class, 'store'])->middleware($sanctumAUTH, $mustBeAdminOrLibrarian);
     Route::put('/{book}', [BookController::class, 'update'])->middleware($sanctumAUTH, $mustBeAdminOrLibrarian);
