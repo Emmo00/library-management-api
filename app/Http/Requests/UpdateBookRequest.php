@@ -26,7 +26,7 @@ class UpdateBookRequest extends FormRequest
         return [
             "title" => ["sometimes", "required", "string"],
             "isbn" => ["sometimes", "required", "string", "unique:books"],
-            "published_date" => ["sometimes", "required", "datetime"],
+            "published_date" => ["sometimes", "required", "date"],
             "author_id" => ["sometimes", "required", "string", "exists:authors.id"],
             "status" => ["sometimes", "required", Rule::in(BookStatus::all())]
         ];

@@ -24,7 +24,7 @@ class UpdateAuthorRequest extends FormRequest
         return [
             "name" => ["sometimes", "required", "string"],
             "bio" => ["sometimes", "string"],
-            "birthdate" => ["sometimes", "datetime"],
+            "birthdate" => ["sometimes", "date"],
         ];
     }
 }

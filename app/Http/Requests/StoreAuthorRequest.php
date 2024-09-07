@@ -24,7 +24,7 @@ class StoreAuthorRequest extends FormRequest
         return [
             "name" => ["required", "string"],
             "bio" => ["sometimes", "string"],
-            "birthdate" => ["sometimes", "datetime"],
+            "birthdate" => ["sometimes", "date"],
         ];
     }
 }
