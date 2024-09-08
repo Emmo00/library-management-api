@@ -26,7 +26,7 @@ class AuthorController extends Controller
     {
         $author = Author::create($request->validated());
 
-        return respondSuccess("Author created successfully", $author);
+        return respondSuccess("Author created successfully", $author, 201);
     }
 
     /**

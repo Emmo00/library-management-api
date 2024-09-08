@@ -53,7 +53,7 @@ class UserController extends Controller
         return respondSuccess("User successfully created", [
             "user" => $user,
             "token" => $token,
-        ]);
+        ], 201);
     }
 
     /**
