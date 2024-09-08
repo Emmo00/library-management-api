@@ -1,66 +1,142 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Library Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a Library Management API built with Laravel, allowing you to manage books, authors, users, and borrowing records. The API supports user roles such as Admin, Librarian, and Member, with different permissions for each role.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Books:** Create, update, delete, search, borrow, and return books.
+- **Authors:** Manage authors.
+- **Users:** Manage users, with authentication and role-based access control.
+- **Borrow Records:** Manage and track book borrowings.
+- **Authentication:** Token-based authentication using Laravel Sanctum.
+- **Rate Limiting:** Throttled routes to prevent abuse.
+- **Unit Tests:** Unit tests are implemented for each route
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.0
+- Composer
+- Laravel >= 9.x
+- MySQL or any relational database supported by Laravel
 
-## Learning Laravel
+## Setup Instructions
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Clone the Repository
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/Emmo00/library-management-api.git
+cd library-management-api
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Install Dependencies
 
-## Laravel Sponsors
+Install the PHP dependencies:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Set Up Environment Variables
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Create a `.env` file by copying `.env.example`:
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Update the following settings in the `.env` file:
 
-## Code of Conduct
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+SANCTUM_STATEFUL_DOMAINS="localhost"
+SESSION_DOMAIN="localhost"
+```
 
-## Security Vulnerabilities
+### 4. Generate Application Key
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan key:generate
+```
 
-## License
+### 5. Run Migrations and Seed the Database
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Run the database migrations:
+
+```bash
+php artisan migrate:fresh
+```
+
+### 6. Serve the Application Locally
+
+```bash
+php artisan serve
+```
+
+The application will now be running at `http://127.0.0.1:8000`.
+
+### 7. Running Tests
+
+To run the feature and unit tests for your application:
+
+```bash
+php artisan test
+```
+
+## API Endpoints
+
+Here is an overview of the available API endpoints.
+
+### Authentication
+
+- **POST** `/login`: Authenticate a user and retrieve a Sanctum token.
+
+### Books
+
+- **GET** `/books`: Retrieve a list of all books.
+- **GET** `/books/search`: Search for books by title, author, or ISBN.
+- **GET** `/books/{id}`: Retrieve details of a specific book.
+- **POST** `/books`: Create a new book (Admin/Librarian only).
+- **PUT** `/books/{id}`: Update an existing book (Admin/Librarian only).
+- **DELETE** `/books/{id}`: Delete a book (Admin only).
+- **POST** `/books/{id}/borrow`: Borrow a book (Member only, if available).
+- **POST** `/books/{id}/return`: Return a borrowed book (Member only).
+
+### Authors
+
+- **GET** `/authors`: Retrieve a list of all authors.
+- **GET** `/authors/{id}`: Retrieve details of a specific author.
+- **POST** `/authors`: Create a new author (Admin/Librarian only).
+- **PUT** `/authors/{id}`: Update an author (Admin/Librarian only).
+- **DELETE** `/authors/{id}`: Delete an author (Admin only).
+
+### Users
+
+- **GET** `/users`: Retrieve a list of users (Admin only).
+- **GET** `/users/{id}`: Retrieve details of a specific user (Admin only).
+- **POST** `/users`: Register a new user.
+- **PUT** `/users/{id}`: Update user details (Admin only or self).
+- **DELETE** `/users/{id}`: Delete a user (Admin only).
+
+- **POST** `/create-librarian`: Register a new (Librarian) user.
+
+### Borrow Records
+
+- **GET** `/borrow-records`: Retrieve all borrow records (Admin/Librarian only).
+- **GET** `/borrow-records/{id}`: Retrieve details of a specific borrow record (Admin/Librarian only).
+
+### Roles and Permissions
+
+The application uses role-based access control with the following roles:
+- **Admin:** Full access to manage books, authors, users, and borrow records.
+- **Librarian:** Can manage books, authors, and borrow records.
+- **Member:** Can borrow and return books, view personal details.
+
+## Contribution Guidelines
+
+Feel free to submit a pull request or open an issue for any bug fixes or feature requests.
