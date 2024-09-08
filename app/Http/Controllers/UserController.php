@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
+use App\Http\Requests\CreateLibrarianRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -85,5 +86,18 @@ class UserController extends Controller
         $user->delete();
 
         return respondSuccess("User successfully deleted");
+    }
+
+    public function createLibrarian(CreateLibrarianRequest $request)
+    {
+        $user = User::create([
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => Hash::make($request->password),
+            "role" => UserRole::LIBRARIAN,
+        ]);
+
+
+        return respondSuccess("User successfully created", $user, 201);
     }
 }

@@ -41,6 +41,7 @@ Route::prefix('users')->middleware('throttle:api')->group(function () use ($sanc
 });
 
 Route::post('/login', [UserController::class, 'login'])->middleware('throttle:api');
+Route::post('/create-librarian', [UserController::class, 'createLibrarian'])->middleware($sanctumAUTH, $mustBeAdmin);
 
 Route::prefix('borrow-records')->middleware('throttle:api')->group(function () use ($sanctumAUTH, $mustBeAdminOrLibrarian) {
     Route::get('/', [BorrowRecordController::class, 'index'])->middleware($sanctumAUTH, $mustBeAdminOrLibrarian);
